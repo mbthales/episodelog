@@ -6,6 +6,18 @@ export type ApiShowResponse = {
   }
 }
 
+export type ApiShowEpisodeResponse = {
+  airstamp: string
+  name: string
+  season: number
+  number: number
+  _links: {
+    show: {
+      name: string
+    }
+  }
+}
+
 export type UserShow = {
   showId: number
   name: string
