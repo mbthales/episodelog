@@ -7,7 +7,11 @@ import { UserShow } from './types'
 
 function App() {
   const [showName, setShowName] = useState('')
-  const { data: shows, isLoading, isError } = useQuery({
+  const {
+    data: shows,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['apiShows', showName],
     queryFn: () => getApiShowsBySimilarName(showName),
   })
@@ -35,16 +39,21 @@ function App() {
           <ul>
             {shows.map(({ show }) => (
               <li key={show.id}>
-                <h2>{show.name} - {show.premiered}</h2>
-                <button onClick={() => addShow.mutate({ showId: show.id, name: show.name })}>
+                <h2>
+                  {show.name} - {show.premiered}
+                </h2>
+                <button
+                  onClick={() =>
+                    addShow.mutate({ showId: show.id, name: show.name })
+                  }
+                >
                   Like
                 </button>
               </li>
             ))}
           </ul>
-        )
-        }
-      </label >
+        )}
+      </label>
       <div>
         {userShows && userShows.length > 0 && (
           <div>

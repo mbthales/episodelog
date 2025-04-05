@@ -6,9 +6,9 @@ const instance = axios.create({
   baseURL: 'https://api.tvmaze.com/',
 })
 
-export async function getApiShowsBySimilarName(showName: string): Promise<ApiShowResponse[]> {
+export async function getApiShowsBySimilarName(
+  showName: string
+): Promise<ApiShowResponse[]> {
   const res = await instance.get(`/search/shows?q=${showName}`)
   return res.data
 }
-
-
