@@ -9,12 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  run-prettier:
+  format-code:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        folder: [frontend, backend]
 
     steps:
       - name: Checkout Repository
@@ -25,14 +21,24 @@ jobs:
         with:
           node-version: '22.14.0'
 
-      - name: Install Dependencies
+      - name: Install Frontend Dependencies
         run: |
-          cd ${{ matrix.folder }}
+          cd frontend
           npm install
 
-      - name: Run Prettier
+      - name: Run Prettier in Frontend
         run: |
-          cd ${{ matrix.folder }}
+          cd frontend
+          npm run format
+
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Run Prettier in Backend
+        run: |
+          cd backend
           npm run format
 
       - name: Commit and Push Changes (if any)
@@ -41,7 +47,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git diff --quiet && echo "No changes to commit" || (
             git add .
-            git commit -m "Formatted code in ${{ matrix.folder }}"
+            git commit -m "Formatted code"
+            git pull --rebase
             git push
           )
         env:
