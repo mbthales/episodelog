@@ -3,18 +3,21 @@ import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
 
 export const insertUserShowSchema = createInsertSchema(shows)
-export const signupSchema = createInsertSchema(users).omit({
+export const signupSchema = createInsertSchema(users)
+  .omit({
     createdAt: true,
     updatedAt: true,
-}).extend({
+  })
+  .extend({
     username: z.string().max(10),
     email: z.string().email(),
-})
-export const signinSchema = createInsertSchema(users).omit({
+  })
+export const signinSchema = createInsertSchema(users)
+  .omit({
     createdAt: true,
     updatedAt: true,
     email: true,
-}).extend({
+  })
+  .extend({
     username: z.string().max(10),
-})
-
+  })
