@@ -22,3 +22,11 @@ export type UserShow = {
   showId: number
   name: string
 }
+
+export type ErrorResponse = {
+  response: {
+    data: {
+      details: string
+    }
+  }
+}

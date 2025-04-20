@@ -11,11 +11,25 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SignupImport } from './routes/signup'
+import { Route as SigninImport } from './routes/signin'
 import { Route as ShowsImport } from './routes/shows'
 import { Route as EpisodesImport } from './routes/episodes'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const SignupRoute = SignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SigninRoute = SigninImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ShowsRoute = ShowsImport.update({
   id: '/shows',
@@ -60,6 +74,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShowsImport
       parentRoute: typeof rootRoute
     }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +97,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/episodes': typeof EpisodesRoute
   '/shows': typeof ShowsRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/episodes': typeof EpisodesRoute
   '/shows': typeof ShowsRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +114,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/episodes': typeof EpisodesRoute
   '/shows': typeof ShowsRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/episodes' | '/shows'
+  fullPaths: '/' | '/episodes' | '/shows' | '/signin' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/episodes' | '/shows'
-  id: '__root__' | '/' | '/episodes' | '/shows'
+  to: '/' | '/episodes' | '/shows' | '/signin' | '/signup'
+  id: '__root__' | '/' | '/episodes' | '/shows' | '/signin' | '/signup'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +131,16 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EpisodesRoute: typeof EpisodesRoute
   ShowsRoute: typeof ShowsRoute
+  SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EpisodesRoute: EpisodesRoute,
   ShowsRoute: ShowsRoute,
+  SigninRoute: SigninRoute,
+  SignupRoute: SignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +155,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/episodes",
-        "/shows"
+        "/shows",
+        "/signin",
+        "/signup"
       ]
     },
     "/": {
@@ -128,6 +168,12 @@ export const routeTree = rootRoute
     },
     "/shows": {
       "filePath": "shows.tsx"
+    },
+    "/signin": {
+      "filePath": "signin.tsx"
+    },
+    "/signup": {
+      "filePath": "signup.tsx"
     }
   }
 }
