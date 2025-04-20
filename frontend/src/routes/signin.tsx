@@ -45,7 +45,6 @@ function RouteComponent() {
     },
   })
 
-
   return (
     <form
       onSubmit={(e) => {
@@ -90,9 +89,7 @@ function RouteComponent() {
           name="password"
           validators={{
             onSubmit: ({ value }) =>
-              !value
-                ? 'A password is required'
-                : undefined
+              !value ? 'A password is required' : undefined,
           }}
           children={(field) => {
             return (

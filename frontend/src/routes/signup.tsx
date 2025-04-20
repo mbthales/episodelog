@@ -52,7 +52,6 @@ function RouteComponent() {
     },
   })
 
-
   return (
     <form
       onSubmit={(e) => {
@@ -97,9 +96,7 @@ function RouteComponent() {
           name="email"
           validators={{
             onSubmit: ({ value }) =>
-              !value
-                ? 'A email is required'
-                : undefined,
+              !value ? 'A email is required' : undefined,
           }}
           children={(field) => {
             return (
@@ -127,9 +124,7 @@ function RouteComponent() {
           name="password"
           validators={{
             onSubmit: ({ value }) =>
-              !value
-                ? 'A password is required'
-                : undefined
+              !value ? 'A password is required' : undefined,
           }}
           children={(field) => {
             return (
@@ -157,9 +152,7 @@ function RouteComponent() {
           name="repeatedPassword"
           validators={{
             onSubmit: ({ value }) =>
-              !value
-                ? 'A password is required'
-                : undefined
+              !value ? 'A password is required' : undefined,
           }}
           children={(field) => {
             return (
