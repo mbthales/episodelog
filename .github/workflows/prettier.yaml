@@ -47,7 +47,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git diff --quiet && echo "No changes to commit" || (
             git add .
-            git commit -m "Formatted code"
+            git commit -m "style(bot): format code"
             git pull --rebase
             git push
           )
