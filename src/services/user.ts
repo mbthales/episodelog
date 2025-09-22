@@ -1,31 +1,40 @@
 import { password } from 'bun'
 
 import { getUserByUsername, insertUser } from '@db/queries/user'
-import { AuthError } from '@errors/customErrors'
+import { AuthError, ConflictError } from '@errors/customErrors'
 import { generateToken } from '@utils/jwt'
 
 import type { userCreateType, userLoginType } from '@app-types/user'
 
-export const createUserService = async (user: userCreateType) => {
-  const hashedPassword = await password.hash(user.password)
+export const createUserService = async (userData: userCreateType) => {
+  const existingUser = await getUserByUsername(userData.username)
+
+  if (existingUser) {
+    throw new ConflictError('User already exists')
+  }
+
+  const hashedPassword = await password.hash(userData.password)
 
   const newUser = {
-    username: user.password,
+    username: userData.username,
     password: hashedPassword,
-    email: user.email,
+    email: userData.email,
   }
 
   await insertUser(newUser)
 }
 
-export const loginUserService = async (_user: userLoginType) => {
-  const user = await getUserByUsername(_user.username)
+export const loginUserService = async (userData: userLoginType) => {
+  const user = await getUserByUsername(userData.username)
 
   if (!user) {
     throw new AuthError('Invalid username or password')
   }
 
-  const isValidPassword = await password.verify(_user.password, user.password)
+  const isValidPassword = await password.verify(
+    userData.password,
+    user.password
+  )
 
   if (!isValidPassword) {
     throw new AuthError('Invalid username or password')

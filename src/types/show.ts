@@ -19,3 +19,8 @@ export type followedShowType = {
 }
 
 export type showCreateType = z.infer<typeof showCreateSchema>
+
+export type showResultQueryType = Pick<
+  showType,
+  'id' | 'name' | 'poster' | 'apiId' | 'ended'
+>

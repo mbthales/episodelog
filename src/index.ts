@@ -4,7 +4,9 @@ import { logger } from 'hono/logger'
 import errorHandler from '@errors/errorHandler'
 import authUser from '@middlewares/auth'
 import validator from '@middlewares/validator'
+import { showCreateSchema } from '@schemas/show'
 import { userCreateSchema, userLoginSchema } from '@schemas/user'
+import { followShow } from '@services/show'
 import { createUserService, loginUserService } from '@services/user'
 
 const app = new Hono()
@@ -41,7 +43,12 @@ app.post('/auth/login', validator(userLoginSchema), async (c) => {
   )
 })
 
-app.get('/user/:id', authUser, async (c) => {
+app.post('/user/:id/show', authUser, validator(showCreateSchema), async (c) => {
+  const userId = c.req.param('id')
+  const body = c.req.valid('json')
+
+  await followShow(userId, body)
+
   return c.json({
     message: 'hello',
   })
