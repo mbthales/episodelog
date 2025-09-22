@@ -50,7 +50,7 @@ app.post('/user/:id/show', authUser, validator(showCreateSchema), async (c) => {
   await followShow(userId, body)
 
   return c.json({
-    message: 'hello',
+    message: 'Show followed successfully',
   })
 })
 

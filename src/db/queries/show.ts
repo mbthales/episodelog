@@ -6,7 +6,7 @@ export const insertShow = async (showData: showCreateType) => {
   const { name, poster, apiId, ended } = showData
 
   const result = await sql`
-      INSERT INTO shows (name, poster, "apiId", ended) 
+      INSERT INTO shows (name, poster, api_id, ended) 
       VALUES (${name}, ${poster}, ${apiId}, ${ended}) RETURNING id;
     `
 
@@ -17,16 +17,16 @@ export const insertShow = async (showData: showCreateType) => {
 
 export const insertFollowedShow = async (userId: string, showId: string) => {
   await sql`
-    INSERT INTO "followedShows" ("userId", "showId") 
+    INSERT INTO followed_shows (user_Id, show_Id) 
     VALUES (${userId}, ${showId});
   `
 }
 
 export const getShowByApiId = async (apiId: number) => {
   const result = await sql`
-      SELECT id, name, poster, ended, "apiId" 
+      SELECT id, name, poster, ended, api_id 
       FROM shows 
-      WHERE "apiId" = ${apiId} 
+      WHERE api_id = ${apiId} 
       LIMIT 1;
     `
 
@@ -40,9 +40,9 @@ export const getFollowedShowByUserIdAndShowId = async (
   showId: string
 ) => {
   const result = await sql`
-    SELECT "userId", "showId"
-    FROM "followedShows"
-    WHERE "userId" = ${userId} AND "showId" = ${showId}
+    SELECT user_id, show_id
+    FROM followed_shows
+    WHERE user_Id = ${userId} AND show_Id = ${showId}
     LIMIT 1;
   `
   const followedShow = result[0] as { userId: string; showId: string }

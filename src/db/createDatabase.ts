@@ -17,7 +17,7 @@ const createDatabases = async () => {
         "id" uuid PRIMARY KEY DEFAULT gen_random_uuid (),
         "name" varchar(50) NOT NULL,
         "poster" text,
-        "apiId" integer NOT NULL UNIQUE,
+        "api_id" integer NOT NULL UNIQUE,
         "ended" boolean NOT NULL,
         "created_at" timestamptz NOT NULL DEFAULT now(),
         "updated_at" timestamptz NOT NULL DEFAULT now()
@@ -25,11 +25,11 @@ const createDatabases = async () => {
   `
 
   await sql`
-    CREATE TABLE IF NOT EXISTS "followedShows" (
-        "userId" uuid NOT NULL REFERENCES "users"("id") ON DELETE CASCADE,
-        "showId" uuid NOT NULL REFERENCES "shows"("id") ON DELETE CASCADE,
+    CREATE TABLE IF NOT EXISTS "followed_shows" (
+        "user_id" uuid NOT NULL REFERENCES "users"("id") ON DELETE CASCADE,
+        "show_id" uuid NOT NULL REFERENCES "shows"("id") ON DELETE CASCADE,
         "created_at" timestamptz NOT NULL DEFAULT now(),
-        PRIMARY KEY ("userId", "showId")
+        PRIMARY KEY ("user_id", "show_id")
     );
   `
 }
