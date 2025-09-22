@@ -49,3 +49,15 @@ export const getFollowedShowByUserIdAndShowId = async (
 
   return followedShow
 }
+
+export const getAllFollowedShowsByUser = async (userId: string) => {
+  const result = await sql`
+    SELECT id, name, poster, ended, api_id
+    FROM shows
+    JOIN followed_shows
+    ON shows.id = followed_shows.show_id
+    WHERE followed_shows.user_id = ${userId};
+  `
+
+  return result as showResultQueryType[]
+}

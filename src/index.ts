@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 
+import { getAllFollowedShowsByUser } from '@db/queries/show'
 import errorHandler from '@errors/errorHandler'
 import authUser from '@middlewares/auth'
 import validator from '@middlewares/validator'
@@ -51,6 +52,16 @@ app.post('/user/:id/show', authUser, validator(showCreateSchema), async (c) => {
 
   return c.json({
     message: 'Show followed successfully',
+  })
+})
+
+app.get('/user/:id/show', authUser, async (c) => {
+  const userId = c.req.param('id')
+
+  const followedShows = await getAllFollowedShowsByUser(userId)
+
+  return c.json({
+    data: followedShows,
   })
 })
 
