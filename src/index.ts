@@ -1,6 +1,8 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
+import { originUrl } from '@config'
 import { getAllFollowedShowsByUser } from '@db/queries/show'
 import errorHandler from '@errors/errorHandler'
 import authUser from '@middlewares/auth'
@@ -12,6 +14,14 @@ import { createUserService, loginUserService } from '@services/user'
 
 const app = new Hono()
 
+app.use(
+  cors({
+    origin: originUrl,
+    allowMethods: ['POST', 'GET', 'DELETE', 'OPTIONS'],
+    maxAge: 600,
+    credentials: true,
+  })
+)
 app.use(logger())
 
 app.onError(errorHandler)
