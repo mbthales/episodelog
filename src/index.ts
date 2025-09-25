@@ -1,8 +1,9 @@
 import { Hono } from 'hono'
+import { getCookie, setCookie } from 'hono/cookie'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
-import { originUrl } from '@config'
+import { accessTokenTime, originUrl, refreshTokenDays } from '@config'
 import { getAllFollowedShowsByUser } from '@db/queries/show'
 import errorHandler from '@errors/errorHandler'
 import authUser from '@middlewares/auth'
@@ -11,6 +12,9 @@ import { showCreateSchema } from '@schemas/show'
 import { userCreateSchema, userLoginSchema } from '@schemas/user'
 import { followShow } from '@services/show'
 import { createUserService, loginUserService } from '@services/user'
+import { generateToken, verifyToken } from '@utils/jwt'
+
+import type { jwtPayloadType } from '@app-types/jwt'
 
 const app = new Hono()
 
@@ -42,13 +46,46 @@ app.post('/auth/register', validator(userCreateSchema), async (c) => {
 app.post('/auth/login', validator(userLoginSchema), async (c) => {
   const body = c.req.valid('json')
 
-  const token = await loginUserService(body)
+  const { accessToken, refreshToken } = await loginUserService(body)
 
-  c.header('Authorization', token)
+  setCookie(c, 'refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Strict',
+    maxAge: 60 * 60 * 24 * refreshTokenDays,
+    path: '/',
+  })
 
   return c.json(
     {
       message: 'User logged in succefully',
+      accessToken,
+    },
+    200
+  )
+})
+
+app.get('/auth/refresh', async (c) => {
+  const refreshToken = getCookie(c, 'refreshToken')
+
+  if (!refreshToken) {
+    return c.json(
+      {
+        message: 'Refresh cookie not found',
+      },
+      401
+    )
+  }
+
+  const validatedToken = await verifyToken(refreshToken)
+  const tokenPayload = validatedToken.payload as jwtPayloadType
+
+  const newAccessToken = await generateToken(tokenPayload, accessTokenTime)
+
+  return c.json(
+    {
+      message: 'Access token renewed successfully',
+      accessToken: newAccessToken,
     },
     200
   )

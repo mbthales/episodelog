@@ -5,14 +5,17 @@ import { AuthError } from '@errors/customErrors'
 
 import type { jwtPayloadType } from '@app-types/jwt'
 
-export const generateToken = async (payload: jwtPayloadType) => {
+export const generateToken = async (
+  payload: jwtPayloadType,
+  expirationTime: string
+) => {
   const secret = new TextEncoder().encode(secretJWT)
   const alg = 'HS256'
 
   const jwt = await new SignJWT(payload)
     .setProtectedHeader({ alg })
     .setIssuedAt()
-    .setExpirationTime('3h')
+    .setExpirationTime(expirationTime)
     .sign(secret)
 
   return jwt

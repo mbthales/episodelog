@@ -1,5 +1,6 @@
 import { password } from 'bun'
 
+import { accessTokenTime, refreshTokenTime } from '@config'
 import { getUserByUsername, insertUser } from '@db/queries/user'
 import { AuthError, ConflictError } from '@errors/customErrors'
 import { generateToken } from '@utils/jwt'
@@ -45,7 +46,8 @@ export const loginUserService = async (userData: userLoginType) => {
     username: user.username,
   }
 
-  const token = generateToken(jwtPayload)
+  const accessToken = await generateToken(jwtPayload, accessTokenTime)
+  const refreshToken = await generateToken(jwtPayload, refreshTokenTime)
 
-  return token
+  return { accessToken, refreshToken }
 }
