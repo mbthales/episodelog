@@ -39,8 +39,9 @@ app.post('/login', validator(userLoginSchema), async (c) => {
 
   return c.json(
     {
-      message: 'User logged in succefully',
+      message: 'User logged in successfully',
       accessToken,
+      username: body.username,
     },
     200
   )
