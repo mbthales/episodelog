@@ -32,7 +32,7 @@ app.post('/login', validator(userLoginSchema), async (c) => {
   setCookie(c, 'refreshToken', refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'Strict',
+    sameSite: 'None',
     maxAge: 60 * 60 * 24 * refreshTokenDays,
     path: '/',
   })
