@@ -21,6 +21,8 @@ function Index() {
   })
 
   const updateAccessToken = useAuthStore((state) => state.updateAccessToken)
+  const updateUsername = useAuthStore((state) => state.updateUsername)
+  const updateUserId = useAuthStore((state) => state.updateUserId)
 
   const handleLoginClick = () => {
     signInMutation({ username: 'testando', password: 'testando' })
@@ -29,8 +31,10 @@ function Index() {
   useEffect(() => {
     if (data) {
       updateAccessToken(data.accessToken)
+      updateUsername(data.username)
+      updateUserId(data.id)
     }
-  }, [data, updateAccessToken])
+  }, [data, updateAccessToken, updateUsername, updateUserId])
 
   return (
     <>

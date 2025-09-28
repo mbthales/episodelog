@@ -19,7 +19,12 @@ export const loginUser = async (credentials: {
     throw new Error(error.message)
   }
 
-  return (await req.json()) as { message: string; accessToken: string }
+  return (await req.json()) as {
+    message: string
+    accessToken: string
+    username: string
+    id: string
+  }
 }
 
 export const refreshAccessToken = async () => {
@@ -33,5 +38,16 @@ export const refreshAccessToken = async () => {
     credentials: 'include',
   })
 
-  return (await req.json()) as { message: string; accessToken: string }
+  if (!req.ok) {
+    const error = (await req.json()) as { message: string }
+
+    throw new Error(error.message)
+  }
+
+  return (await req.json()) as {
+    message: string
+    accessToken: string
+    username: string
+    id: string
+  }
 }
