@@ -49,5 +49,5 @@ export const loginUserService = async (userData: userLoginType) => {
   const accessToken = await generateToken(jwtPayload, accessTokenTime)
   const refreshToken = await generateToken(jwtPayload, refreshTokenTime)
 
-  return { accessToken, refreshToken }
+  return { accessToken, refreshToken, username: user.username, id: user.id }
 }

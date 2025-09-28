@@ -27,7 +27,8 @@ app.post('/register', validator(userCreateSchema), async (c) => {
 app.post('/login', validator(userLoginSchema), async (c) => {
   const body = c.req.valid('json')
 
-  const { accessToken, refreshToken } = await loginUserService(body)
+  const { accessToken, refreshToken, username, id } =
+    await loginUserService(body)
 
   setCookie(c, 'refreshToken', refreshToken, {
     httpOnly: true,
@@ -41,7 +42,8 @@ app.post('/login', validator(userLoginSchema), async (c) => {
     {
       message: 'User logged in successfully',
       accessToken,
-      username: body.username,
+      username,
+      id,
     },
     200
   )
@@ -68,6 +70,8 @@ app.get('/refresh', async (c) => {
     {
       message: 'Access token renewed successfully',
       accessToken: newAccessToken,
+      username: tokenPayload.username,
+      id: tokenPayload.userId,
     },
     200
   )
