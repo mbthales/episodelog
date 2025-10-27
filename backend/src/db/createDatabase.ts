@@ -5,8 +5,8 @@ const createDatabases = async () => {
     CREATE TABLE IF NOT EXISTS "users" (
         "id" uuid PRIMARY KEY DEFAULT gen_random_uuid (),
         "username" varchar(15) NOT NULL UNIQUE,
-        "password" text NOT NULL,
-        "email" text NOT NULL UNIQUE,
+        "password" varchar(255) NOT NULL,
+        "email" varchar(255) NOT NULL UNIQUE,
         "created_at" timestamptz NOT NULL DEFAULT now(),
         "updated_at" timestamptz NOT NULL DEFAULT now()
     );
