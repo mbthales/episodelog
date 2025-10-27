@@ -25,7 +25,7 @@ export const followShow = async (userId: string, showData: showCreateType) => {
 
 export const searchShow = async (query: string) => {
   const response = await fetch(
-    `${showsApiUrl}/search/shws?q=${encodeURIComponent(query)}`
+    `${showsApiUrl}/search/shows?q=${encodeURIComponent(query)}`
   )
 
   if (!response.ok) {
