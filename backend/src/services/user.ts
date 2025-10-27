@@ -2,18 +2,12 @@ import { password } from 'bun'
 
 import { accessTokenTime, refreshTokenTime } from '@config'
 import { getUserByUsername, insertUser } from '@db/queries/user'
-import { AuthError, ConflictError } from '@errors/customErrors'
+import { AuthError } from '@errors/customErrors'
 import { generateToken } from '@utils/jwt'
 
 import type { userCreateType, userLoginType } from '@app-types/user'
 
 export const createUserService = async (userData: userCreateType) => {
-  const existingUser = await getUserByUsername(userData.username)
-
-  if (existingUser) {
-    throw new ConflictError('User already exists')
-  }
-
   const hashedPassword = await password.hash(userData.password)
 
   const newUser = {

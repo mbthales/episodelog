@@ -1,13 +1,23 @@
-import { sql } from 'bun'
+import { SQL, sql } from 'bun'
 
 import type { userCreateType, userQueryResultType } from '@app-types/user'
+import { ConflictError } from '@errors/customErrors'
 
 export const insertUser = async (user: userCreateType) => {
   const { username, password: hashedPassword, email } = user
 
-  await sql`
-    INSERT INTO users (username, password, email) 
-    VALUES (${username}, ${hashedPassword}, ${email});`
+  try{
+    await sql`
+      INSERT INTO users (username, password, email) 
+      VALUES (${username}, ${hashedPassword}, ${email});`
+      
+  } catch(error){
+    if(error instanceof SQL.PostgresError){
+      if(error.errno && error.errno === '23505'){
+        throw new ConflictError('User or email already exists')
+      }
+    }
+  }
 }
 
 export const getUserByUsername = async (username: string) => {

@@ -1,10 +1,9 @@
 import {
-  getFollowedShowByUserIdAndShowId,
   getShowByApiId,
   insertFollowedShow,
   insertShow,
 } from '@db/queries/show'
-import { ConflictError, ExternalApiError } from '@errors/customErrors'
+import { ExternalApiError } from '@errors/customErrors'
 import { showsApiUrl } from '@config'
 
 import type { showApiType, showCreateType } from '@app-types/show'
@@ -19,15 +18,6 @@ export const followShow = async (userId: string, showData: showCreateType) => {
   } else {
     const newShow = await insertShow(showData)
     showId = newShow.id
-  }
-
-  const existingFollowedShow = await getFollowedShowByUserIdAndShowId(
-    userId,
-    showId
-  )
-
-  if (existingFollowedShow) {
-    throw new ConflictError('You already follows the show')
   }
 
   await insertFollowedShow(userId, showId)
