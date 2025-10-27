@@ -6,6 +6,7 @@ import { originUrl, port } from '@config'
 import errorHandler from '@errors/errorHandler'
 import auth from '@routes/auth'
 import user from '@routes/user'
+import show from '@routes/show'
 
 const app = new Hono()
 
@@ -23,6 +24,7 @@ app.onError(errorHandler)
 
 app.route('/auth', auth)
 app.route('/user', user)
+app.route('/show', show)
 
 export default {
   port,

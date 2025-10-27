@@ -1,4 +1,4 @@
-import { AuthError, ConflictError } from '@errors/customErrors'
+import { AuthError, ConflictError, ExternalApiError } from '@errors/customErrors'
 
 import type { Context } from 'hono'
 
@@ -20,6 +20,15 @@ const errorHandler = (error: Error, c: Context) => {
         message: error.message,
       },
       409
+    )
+  }
+
+  if (error instanceof ExternalApiError) {
+    return c.json(
+      {
+        message: error.message,
+      },
+      502
     )
   }
 

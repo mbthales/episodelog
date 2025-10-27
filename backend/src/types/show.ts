@@ -18,6 +18,18 @@ export type followedShowType = {
   createdAt: Date
 }
 
+export type showApiType = {
+  show: {
+    id: number
+    name: string
+    image: {
+      original: string | null
+    } | null
+    ended: string | null,
+    premiered: string | null
+  }
+}
+
 export type showCreateType = z.infer<typeof showCreateSchema>
 
 export type showResultQueryType = Pick<
