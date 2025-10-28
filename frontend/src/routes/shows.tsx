@@ -1,5 +1,4 @@
 import { getUserShows } from '@/api/user'
-import { useAuthStore } from '@/stores/auth'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -8,10 +7,9 @@ export const Route = createFileRoute('/shows')({
 })
 
 function RouteComponent() {
-  const { userId } = useAuthStore.getState()
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['shows'],
-    queryFn: () => getUserShows(userId!),
+    queryFn: () => getUserShows(),
   })
 
   return (

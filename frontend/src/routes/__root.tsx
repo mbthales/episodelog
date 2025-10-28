@@ -14,6 +14,9 @@ const RootLayout = () => {
         <Link to="/shows" className="[&.active]:font-bold">
           Shows
         </Link>
+        <Link to="/search" className="[&.active]:font-bold">  
+          Search
+        </Link>
       </div>
       <hr />
       <div>
