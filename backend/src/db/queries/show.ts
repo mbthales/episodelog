@@ -1,5 +1,6 @@
 import { SQL, sql } from 'bun'
 
+import { ConflictError } from "@errors/customErrors"
 import type { showCreateType, showResultQueryType } from '@app-types/show'
 
 export const insertShow = async (showData: showCreateType) => {
@@ -24,7 +25,7 @@ export const insertFollowedShow = async (userId: string, showId: string) => {
   } catch(error){
     if(error instanceof SQL.PostgresError){
       if(error.errno && error.errno === '23505'){
-        throw new Error('User already follows the show')
+        throw new ConflictError('User already follows the show')
       }
     }
   }
@@ -32,7 +33,7 @@ export const insertFollowedShow = async (userId: string, showId: string) => {
 
 export const getShowByApiId = async (apiId: number) => {
   const result = await sql`
-      SELECT id, name, poster, ended, api_id 
+      SELECT id, name, poster, api_id, country
       FROM shows 
       WHERE api_id = ${apiId} 
       LIMIT 1;
@@ -45,7 +46,7 @@ export const getShowByApiId = async (apiId: number) => {
 
 export const getAllFollowedShowsByUser = async (userId: string) => {
   const result = await sql`
-    SELECT id, name, poster, ended, api_id
+    SELECT id, name, poster, api_id, country
     FROM shows
     JOIN followed_shows
     ON shows.id = followed_shows.show_id

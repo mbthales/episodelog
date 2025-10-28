@@ -7,7 +7,7 @@ export type showType = {
   name: string
   poster: string | null
   apiId: number
-  ended: boolean
+  country: string
   createdAt: Date
   updatedAt: Date
 }
@@ -33,5 +33,5 @@ export type showCreateType = z.infer<typeof showCreateSchema>
 
 export type showResultQueryType = Pick<
   showType,
-  'id' | 'name' | 'poster' | 'apiId' | 'ended'
+  'id' | 'name' | 'poster' | 'apiId' | 'country'
 >
