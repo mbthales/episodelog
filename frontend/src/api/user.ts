@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/auth'
+
 import type { followShowType } from '@/types/show'
 
 export const unfollowShow = async (showId: number) => {
@@ -8,7 +9,7 @@ export const unfollowShow = async (showId: number) => {
   const req = await fetch(url, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${accessToken || ''}`,
+      Authorization: `Bearer ${accessToken || ''}`,
       'Content-Type': 'application/json',
     },
     credentials: 'include',
@@ -25,14 +26,14 @@ export const unfollowShow = async (showId: number) => {
   }
 }
 
-export const followShow = async (showData: followShowType) => { 
+export const followShow = async (showData: followShowType) => {
   const { accessToken } = useAuthStore.getState()
   const url = `http://localhost:3000/user/shows`
 
   const req = await fetch(url, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${accessToken || ''}`,
+      Authorization: `Bearer ${accessToken || ''}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(showData),

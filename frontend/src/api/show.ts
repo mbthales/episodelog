@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth' 
+import { useAuthStore } from '@/stores/auth'
 
 export const searchShows = async (showName: string) => {
   const { accessToken } = useAuthStore.getState()
@@ -7,7 +7,7 @@ export const searchShows = async (showName: string) => {
   const req = await fetch(url, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${accessToken || ''}`,
+      Authorization: `Bearer ${accessToken || ''}`,
       'Content-Type': 'application/json',
     },
     credentials: 'include',
