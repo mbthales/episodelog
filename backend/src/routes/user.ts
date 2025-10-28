@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 
-import { getAllFollowedShowsByUser } from '@db/queries/show'
+import { deleteFollowedShow, getAllFollowedShowsByUser } from '@db/queries/show'
 import authUser from '@middlewares/auth'
 import validator from '@middlewares/validator'
 import { showCreateSchema } from '@schemas/show'
@@ -26,6 +26,17 @@ app.get('/shows', authUser, async (c) => {
 
   return c.json({
     data: followedShows,
+  })
+})
+
+app.delete('/shows/:showApiId', authUser, async (c) => {
+  const userId = c.get('userId')
+  const { showApiId } = c.req.param()
+
+  await deleteFollowedShow(userId, Number(showApiId))
+
+  return c.json({
+    message: 'Show unfollowed successfully',
   })
 })
 

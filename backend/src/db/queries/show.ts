@@ -31,6 +31,16 @@ export const insertFollowedShow = async (userId: string, showId: string) => {
   }
 }
 
+export const deleteFollowedShow = async (userId: string, showApiId: number) => {
+  await sql`
+    DELETE FROM followed_shows
+    USING shows
+    WHERE followed_shows.show_id = shows.id
+    AND followed_shows.user_id = ${userId}
+    AND shows.api_id = ${showApiId};
+  `
+}
+
 export const getShowByApiId = async (apiId: number) => {
   const result = await sql`
       SELECT id, name, poster, api_id, country
