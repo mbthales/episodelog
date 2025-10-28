@@ -3,11 +3,11 @@ import { SQL, sql } from 'bun'
 import type { showCreateType, showResultQueryType } from '@app-types/show'
 
 export const insertShow = async (showData: showCreateType) => {
-  const { name, poster, apiId, ended } = showData
+  const { name, poster, apiId, country } = showData
 
   const result = await sql`
-      INSERT INTO shows (name, poster, api_id, ended) 
-      VALUES (${name}, ${poster}, ${apiId}, ${ended}) RETURNING id;
+      INSERT INTO shows (name, poster, api_id, country) 
+      VALUES (${name}, ${poster}, ${apiId}, ${country}) RETURNING id;
     `
 
   const show = result[0] as { id: string }
@@ -53,4 +53,19 @@ export const getAllFollowedShowsByUser = async (userId: string) => {
   `
 
   return result as showResultQueryType[]
+}
+
+export const getFollowedShowByUserIdAndShowId = async (userId: string, showApiId: number) => {
+  const result = await sql`
+    SELECT followed_shows.show_id AS id
+    FROM followed_shows
+    JOIN shows ON shows.id = followed_shows.show_id
+    WHERE followed_shows.user_id = ${userId}
+    AND shows.api_id = ${showApiId}
+    LIMIT 1;
+  `
+
+  const followedShowId = result[0] as {id: string} | undefined
+
+  return followedShowId
 }

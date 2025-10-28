@@ -6,10 +6,10 @@ import validator from '@middlewares/validator'
 import { showCreateSchema } from '@schemas/show'
 import { followShow } from '@services/show'
 
-const app = new Hono()
+const app = new Hono<{ Variables: { userId: string } }>()
 
-app.post('/:id/show', authUser, validator(showCreateSchema), async (c) => {
-  const userId = c.req.param('id')
+app.post('/shows', authUser, validator(showCreateSchema), async (c) => {
+  const userId = c.get('userId')
   const body = c.req.valid('json')
 
   await followShow(userId, body)
@@ -19,8 +19,8 @@ app.post('/:id/show', authUser, validator(showCreateSchema), async (c) => {
   })
 })
 
-app.get('/:id/show', authUser, async (c) => {
-  const userId = c.req.param('id')
+app.get('/shows', authUser, async (c) => {
+  const userId = c.get('userId')
 
   const followedShows = await getAllFollowedShowsByUser(userId)
 

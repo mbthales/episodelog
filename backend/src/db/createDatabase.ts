@@ -16,9 +16,8 @@ const createDatabases = async () => {
     CREATE TABLE IF NOT EXISTS "shows" (
         "id" uuid PRIMARY KEY DEFAULT gen_random_uuid (),
         "name" varchar(50) NOT NULL,
-        "poster" text,
+        "poster" varchar(2048),
         "api_id" integer NOT NULL UNIQUE,
-        "ended" boolean NOT NULL,
         "created_at" timestamptz NOT NULL DEFAULT now(),
         "updated_at" timestamptz NOT NULL DEFAULT now()
     );

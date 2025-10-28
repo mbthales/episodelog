@@ -21,9 +21,7 @@ const authUser = createMiddleware(async (c, next) => {
   const validatedToken = await verifyToken(token)
   const tokenPayload = validatedToken.payload as jwtPayloadType
 
-  if (tokenPayload.userId !== c.req.param('id')) {
-    throw new AuthError('Unauthorized')
-  }
+  c.set('userId', tokenPayload.userId)
 
   await next()
 })

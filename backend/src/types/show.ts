@@ -19,15 +19,14 @@ export type followedShowType = {
 }
 
 export type showApiType = {
-  show: {
-    id: number
+  data: {
+    id: string
     name: string
-    image: {
-      original: string | null
-    } | null
-    ended: string | null,
-    premiered: string | null
-  }
+    image_url: string
+    status: string
+    first_air_time: string
+    country: string
+  }[]
 }
 
 export type showCreateType = z.infer<typeof showCreateSchema>
