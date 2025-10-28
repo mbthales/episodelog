@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
-import { searchShow } from '@services/show'
+
 import authUser from '@middlewares/auth'
+import { searchShow } from '@services/show'
 
 const app = new Hono<{ Variables: { userId: string } }>()
 

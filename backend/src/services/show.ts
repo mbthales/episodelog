@@ -1,3 +1,4 @@
+import { showsApiUrl } from '@config'
 import {
   getFollowedShowByUserIdAndShowId,
   getShowByApiId,
@@ -5,10 +6,9 @@ import {
   insertShow,
 } from '@db/queries/show'
 import { ExternalApiError } from '@errors/customErrors'
-import { showsApiUrl } from '@config'
+import { getShowsApiToken } from '@utils/showApi'
 
 import type { showApiType, showCreateType } from '@app-types/show'
-import { getShowsApiToken } from '@utils/showApi'
 
 export const followShow = async (userId: string, showData: showCreateType) => {
   const existingShow = await getShowByApiId(showData.apiId)
@@ -38,22 +38,26 @@ export const searchShow = async (name: string, userId: string) => {
 
   if (!response.ok) {
     throw new ExternalApiError('Failed to fetch TV shows')
-  } 
+  }
 
-  const {data} = await response.json() as showApiType
+  const { data } = (await response.json()) as showApiType
 
-  const showsSanitized = data.filter(item => item.status !== 'Ended').map(async (item) => {
-    const idSanitized = Number(item.id?.match(/\d+/)?.[0]);
+  const showsSanitized = data
+    .filter((item) => item.status !== 'Ended')
+    .map(async (item) => {
+      const idSanitized = Number(item.id?.match(/\d+/)?.[0])
 
-    return {
-      id: idSanitized,
-      name: item.name,
-      premiered: item.first_air_time,
-      poster: item.image_url,
-      country: item.country,
-      followed: Boolean(await getFollowedShowByUserIdAndShowId(userId, idSanitized)),
-    }
-  })
+      return {
+        id: idSanitized,
+        name: item.name,
+        premiered: item.first_air_time,
+        poster: item.image_url,
+        country: item.country,
+        followed: Boolean(
+          await getFollowedShowByUserIdAndShowId(userId, idSanitized)
+        ),
+      }
+    })
 
   return await Promise.all(showsSanitized)
 }

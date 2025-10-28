@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "database:create": "bun ./src/db/createDatabase.ts"
+    "database:create": "bun ./src/db/createDatabase.ts",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",

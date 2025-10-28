@@ -24,7 +24,7 @@ export const getShowsApiToken = async (): Promise<string> => {
     throw new ExternalApiError('Failed to authenticate with external API')
   }
 
-  const {data} = await response.json() as {data: {token: string}}
+  const { data } = (await response.json()) as { data: { token: string } }
 
   cachedToken = data.token
   tokenExpiresAt = now + thirtyDaysMs

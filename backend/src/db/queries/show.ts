@@ -1,6 +1,7 @@
 import { SQL, sql } from 'bun'
 
-import { ConflictError } from "@errors/customErrors"
+import { ConflictError } from '@errors/customErrors'
+
 import type { showCreateType, showResultQueryType } from '@app-types/show'
 
 export const insertShow = async (showData: showCreateType) => {
@@ -17,14 +18,14 @@ export const insertShow = async (showData: showCreateType) => {
 }
 
 export const insertFollowedShow = async (userId: string, showId: string) => {
-  try{
+  try {
     await sql`
       INSERT INTO followed_shows (user_Id, show_Id) 
       VALUES (${userId}, ${showId});
     `
-  } catch(error){
-    if(error instanceof SQL.PostgresError){
-      if(error.errno && error.errno === '23505'){
+  } catch (error) {
+    if (error instanceof SQL.PostgresError) {
+      if (error.errno && error.errno === '23505') {
         throw new ConflictError('User already follows the show')
       }
     }
@@ -66,7 +67,10 @@ export const getAllFollowedShowsByUser = async (userId: string) => {
   return result as showResultQueryType[]
 }
 
-export const getFollowedShowByUserIdAndShowId = async (userId: string, showApiId: number) => {
+export const getFollowedShowByUserIdAndShowId = async (
+  userId: string,
+  showApiId: number
+) => {
   const result = await sql`
     SELECT followed_shows.show_id AS id
     FROM followed_shows
@@ -76,7 +80,7 @@ export const getFollowedShowByUserIdAndShowId = async (userId: string, showApiId
     LIMIT 1;
   `
 
-  const followedShowId = result[0] as {id: string} | undefined
+  const followedShowId = result[0] as { id: string } | undefined
 
   return followedShowId
 }

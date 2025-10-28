@@ -5,8 +5,8 @@ import { logger } from 'hono/logger'
 import { originUrl, port } from '@config'
 import errorHandler from '@errors/errorHandler'
 import auth from '@routes/auth'
-import user from '@routes/user'
 import show from '@routes/show'
+import user from '@routes/user'
 
 const app = new Hono()
 
