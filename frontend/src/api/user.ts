@@ -75,7 +75,7 @@ export const getUserShows = async () => {
       id: string
       name: string
       poster: string | null
-      apiId: number
+      api_id: number
     }[]
   }
 }
