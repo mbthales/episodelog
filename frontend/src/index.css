@@ -1,1 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Oswald:wght@200..700&display=swap');
 @import 'tailwindcss';
+
+@theme {
+  --color-primary-900: #2f4454;
+  --color-primary-600: #566571;
+  --color-accent-900: #2e151b;
+  --color-accent-600: #472a31;
+  --color-font-900: #f2f2f2;
+  --font-title: 'Oswald', sans-serif;
+  --font-body: 'Merriweather', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-primary-900);
+  color: var(--color-font-900);
+}
